@@ -1,6 +1,10 @@
 # Description
 
-This repository is meant to serve as a general template for how to set up new repositories in the JogetOSS organization. 
+This **UTC Date Pack** contains a date picker form element as well as a date formatter that would save date value in UTC and convert to user's timezone.
+
+![formatter](https://github.com/jogetoss/utc-date-pack/assets/70784722/b648eb1c-a4d3-4403-97a8-761afbc8562d)
+
+![date-picker](https://github.com/jogetoss/utc-date-pack/assets/70784722/a6d8c5f5-3c8a-4154-8c40-9256f60c1e28)
 
 # Getting Help
 

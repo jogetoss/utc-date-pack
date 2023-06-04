@@ -1,0 +1,40 @@
+[{
+    "title" : "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.pluginLabel@@",
+    "properties" : [{
+        "name" : "dataFormat",
+        "label" : "@@datalist.dateformatter.dataFormat@@",
+        "description" : "@@datalist.dateformatter.dataFormat.desc@@",
+        "type" : "textfield",
+        "value" : "yyyy-MM-dd HH:mm",
+        "required" : "true"
+    },
+    {
+        "name" : "displayFormat",
+        "label" : "@@datalist.dateformatter.displayFormat@@",
+        "description" : "@@datalist.dateformatter.displayFormat.desc@@",
+        "type" : "textfield",
+        "value" : "dd/MM/yyyy HH:mm",
+        "required" : "true"
+    },
+    {
+        "name" : "mode",
+        "label" : "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.convertToUTC@@",
+        "type" : "selectbox",
+        "value" : "true",
+        "options" : [
+            {
+                "value" : "",
+                "label" : "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.formatChange@@"
+                        
+            },
+            {
+                "value" : "storeInUTC",
+                "label" : "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.valueStoredInUTC@@"
+            },
+            {
+                "value" : "convertToUTC",
+                "label" : "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.convertToUTC@@"
+            }
+        ]
+    }]}
+]

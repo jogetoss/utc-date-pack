@@ -18,7 +18,7 @@
     },
     {
         "name" : "mode",
-        "label" : "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.convertToUTC@@",
+        "label" : "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.mode@@",
         "type" : "selectbox",
         "value" : "true",
         "options" : [

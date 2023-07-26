@@ -48,20 +48,7 @@
         "required": "True",
         "control_field": "mode",
         "control_value": "storeInUTC2",
-        "control_use_regex": "false",
-        "options": [
-            {
-                "value": "Asia/Singapore",
-                "label": "Asia/Singapore"
-            },
-            {
-                "value": "America/New_York",
-                "label": "America/New_York"
-            },
-            {
-                "value": "Europe/London",
-                "label": "Europe/London"
-            }
-        ]
+        "control_use_regex": "true",
+        "options_ajax" : "[CONTEXT_PATH]/web/json/plugin/org.joget.marketplace.datalist.lib.UTCDateDatalistFormatter/service?action=getTimezone"
     }]}
 ]

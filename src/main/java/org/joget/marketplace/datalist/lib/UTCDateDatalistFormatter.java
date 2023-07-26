@@ -1,29 +1,33 @@
 package org.joget.marketplace.datalist.lib;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.joget.apps.app.service.AppUtil;
 import org.joget.apps.datalist.model.DataList;
 import org.joget.apps.datalist.model.DataListColumn;
 import org.joget.apps.datalist.model.DataListColumnFormatDefault;
 import org.joget.commons.util.LogUtil;
 import org.joget.commons.util.TimeZoneUtil;
-import static org.joget.commons.util.TimeZoneUtil.getTimeZoneByGMT;
 import org.joget.workflow.model.service.WorkflowUserManager;
-//import org.springframework.context.ApplicationContext;
-//import org.springframework.context.i18n.LocaleContextHolder;
 import org.joget.directory.model.User;
+import org.joget.plugin.base.PluginWebSupport;
+import org.json.JSONArray;
 
-public class UTCDateDatalistFormatter extends DataListColumnFormatDefault {
+public class UTCDateDatalistFormatter extends DataListColumnFormatDefault implements PluginWebSupport {
 
     public String getName() {
         return "UTC Date Formatter";
     }
 
     public String getVersion() {
-        return "7.0.0";
+        return "7.0.1";
     }
 
     public String getDescription() {
@@ -106,4 +110,33 @@ public class UTCDateDatalistFormatter extends DataListColumnFormatDefault {
         }
         return "";
     }
+
+    public void webService(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        if ("getTimezone".equals(action)) {
+            try {
+                JSONArray jsonArray = new JSONArray();
+
+                String [] ids = TimeZone.getAvailableIDs();
+                
+                for (String id:ids) {
+                    TimeZone zone = TimeZone.getTimeZone(id);
+                    int offset = zone.getRawOffset()/1000;
+                    int hour = offset/3600;
+                    int minutes = (offset % 3600)/60;
+
+                    Map<String, String> option = new HashMap<String, String>();
+                    option.put("value", id);
+                    option.put("label", id);
+                    jsonArray.put(option);
+                }
+
+                jsonArray.write(response.getWriter());
+            } catch (Exception ex) {
+                LogUtil.error(this.getClass().getName(), ex, "Get Timezone Error!");
+            }
+        }
+    }
+
 }

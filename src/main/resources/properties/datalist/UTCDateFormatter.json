@@ -32,8 +32,35 @@
                 "label" : "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.valueStoredInUTC@@"
             },
             {
+                "value": "storeInUTC2",
+                "label": "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.valueStoredInUTC2@@"
+            },
+            {
                 "value" : "convertToUTC",
                 "label" : "@@org.joget.marketplace.datalist.lib.UTCDateFormatter.convertToUTC@@"
+            }
+        ]
+    },
+    {
+        "name": "Timezone",
+        "label": "Timezone",
+        "type": "selectbox",
+        "required": "True",
+        "control_field": "mode",
+        "control_value": "storeInUTC2",
+        "control_use_regex": "false",
+        "options": [
+            {
+                "value": "Asia/Singapore",
+                "label": "Asia/Singapore"
+            },
+            {
+                "value": "America/New_York",
+                "label": "America/New_York"
+            },
+            {
+                "value": "Europe/London",
+                "label": "Europe/London"
             }
         ]
     }]}

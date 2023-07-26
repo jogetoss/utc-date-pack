@@ -1,6 +1,7 @@
 package org.joget.marketplace.datalist.lib;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import org.joget.apps.app.service.AppUtil;
@@ -16,7 +17,7 @@ import org.joget.workflow.model.service.WorkflowUserManager;
 import org.joget.directory.model.User;
 
 public class UTCDateDatalistFormatter extends DataListColumnFormatDefault {
-    
+
     public String getName() {
         return "UTC Date Formatter";
     }
@@ -48,35 +49,54 @@ public class UTCDateDatalistFormatter extends DataListColumnFormatDefault {
                 String displayFormat = getPropertyString("displayFormat");
                 if (displayFormat.isEmpty()) {
                     displayFormat = dataFormat;
-                } 
-                
+                }
+
                 String mode = getPropertyString("mode");
 
                 SimpleDateFormat sdf = new SimpleDateFormat(dataFormat);
                 if ("storeInUTC".equalsIgnoreCase(mode)) {
                     sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-                }else if("convertToUTC".equalsIgnoreCase(mode)) {
-                    if(column.getName().equalsIgnoreCase("dateCreated") || column.getName().equalsIgnoreCase("dateModified")  ){
-                        //LocaleContextHolder.getTimeZone().getID() is NOT returning the current user's correct timezone, it is getting server timezone
-                        //sdf.setTimeZone(TimeZone.getTimeZone(LocaleContextHolder.getTimeZone().getID()));
-                        //use this instead
+                } else if ("convertToUTC".equalsIgnoreCase(mode)) {
+                    if (column.getName().equalsIgnoreCase("dateCreated") || column.getName().equalsIgnoreCase("dateModified")) {
                         WorkflowUserManager workflowUserManager = (WorkflowUserManager) AppUtil.getApplicationContext().getBean("workflowUserManager");
                         User user = workflowUserManager.getCurrentUser();
                         sdf.setTimeZone(TimeZone.getTimeZone(TimeZoneUtil.getTimeZoneByGMT(user.getTimeZone())));
-                    }else{
+                    } else {
                         sdf.setTimeZone(TimeZone.getTimeZone(TimeZoneUtil.getServerTimeZoneID()));
                     }
-                }
-                
+                } else if ("storeInUTC2".equalsIgnoreCase(mode)) {
+                    String customTimezone = getPropertyString("Timezone");
+                    if (!customTimezone.isEmpty()) {
+                        TimeZone timeZone = TimeZone.getTimeZone(customTimezone);
+                        sdf.setTimeZone(timeZone);
+                    }
+                } 
+
                 Date date = sdf.parse(value.toString());
-                
+
                 if ("storeInUTC".equalsIgnoreCase(mode)) {
                     return TimeZoneUtil.convertToTimeZone(date, null, displayFormat);
-                }else if ("convertToUTC".equalsIgnoreCase(mode)) {
+                } else if ("convertToUTC".equalsIgnoreCase(mode)) {
                     SimpleDateFormat outputFormat = new SimpleDateFormat(displayFormat);
                     outputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                     return outputFormat.format(date);
-                }else {
+                } else if ("storeInUTC2".equalsIgnoreCase(mode)) {
+                    String customTimezone = getPropertyString("Timezone");
+                    if (!customTimezone.isEmpty()) {
+                        sdf.setTimeZone(TimeZone.getTimeZone(customTimezone));
+                        Date localDate = sdf.parse(value.toString());
+
+                        TimeZone customTimeZone = TimeZone.getTimeZone(customTimezone);
+                        int timeDifference = customTimeZone.getOffset(localDate.getTime());
+
+                        long utcTime = localDate.getTime() + timeDifference;
+                        Date utcDate = new Date(utcTime);
+
+                        SimpleDateFormat outputFormat = new SimpleDateFormat(displayFormat);
+                        outputFormat.setTimeZone(TimeZone.getTimeZone(customTimezone));
+                        return outputFormat.format(utcDate);
+                    }
+                } else {
                     sdf = new SimpleDateFormat(displayFormat);
                     return sdf.format(date);
                 }
